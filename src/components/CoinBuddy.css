@@ -1,0 +1,23 @@
+.coin-buddy {
+  animation: buddy-bob 3.5s ease-in-out infinite;
+}
+
+.coin-eye {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: buddy-blink 4.5s ease-in-out infinite;
+}
+
+@keyframes buddy-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(-3deg); }
+}
+
+@keyframes buddy-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coin-buddy, .coin-eye { animation: none !important; }
+}

@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
+
+.font-display {
+  font-family: 'Fraunces', serif;
+  font-optical-sizing: auto;
+}
+
+.orbit-wrap {
+  position: relative;
+  width: 380px;
+  height: 380px;
+}
+
+.orbit-glow {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(47, 107, 82, 0.35) 0%, rgba(47, 107, 82, 0) 70%);
+  filter: blur(18px);
+}
+
+.orbit-sphere {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #4a8a6d 0%, #2f6b52 45%, #17392b 100%);
+  box-shadow:
+    0 0 50px rgba(47, 107, 82, 0.4),
+    inset -16px -16px 36px rgba(0, 0, 0, 0.5),
+    inset 8px 8px 24px rgba(255, 255, 255, 0.07);
+  animation: sphere-breathe 7s ease-in-out infinite;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 163, 94, 0.22);
+}
+
+.orbit-ring-1 { width: 240px; height: 240px; animation: spin 16s linear infinite; }
+.orbit-ring-2 { width: 300px; height: 300px; animation: spin 24s linear infinite reverse; }
+.orbit-ring-3 { width: 372px; height: 372px; animation: spin 34s linear infinite; }
+
+.orbit-coin-slot {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+}
+
+.orbit-coin {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #17392b;
+  background: linear-gradient(135deg, #e3c98a, #c9a35e);
+  box-shadow: 0 0 12px rgba(201, 163, 94, 0.45);
+}
+
+.orbit-ring-1 .orbit-coin { animation: spin-reverse 16s linear infinite; }
+.orbit-ring-2 .orbit-coin { animation: spin 24s linear infinite; }
+.orbit-ring-3 .orbit-coin { animation: spin-reverse 34s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+@keyframes sphere-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring-1, .orbit-ring-2, .orbit-ring-3,
+  .orbit-ring-1 .orbit-coin, .orbit-ring-2 .orbit-coin, .orbit-ring-3 .orbit-coin,
+  .orbit-sphere {
+    animation: none !important;
+  }
+}
