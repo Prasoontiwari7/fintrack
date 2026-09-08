@@ -35,12 +35,47 @@ export const getSummary = async (req, res, next) => {
 
     const { start: startOfMonth, end: endOfMonth } = getCurrentMonthRange();
 
+    // Helper to format percentages cleanly (e.g. 2.5%, 10%, 0%)
+    const formatPercent = (val) => {
+      if (isNaN(val) || !isFinite(val)) return '0%';
+      const rounded = Math.round(val * 10) / 10;
+      return rounded % 1 === 0 ? `${rounded.toFixed(0)}%` : `${rounded.toFixed(1)}%`;
+    };
+
+    // Range for previous month to compute accurate MoM changes
+    const startOfPrevMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth() - 1, 1);
+    const endOfPrevMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth(), 0, 23, 59, 59, 999);
+
     // 1. Calculate Total Income (all-time sum of all income records)
     const incomeAllTimeResult = await Income.aggregate([
       { $match: { user: userId } },
       { $group: { _id: null, total: { $sum: '$amount' } } },
     ]);
     const totalIncome = incomeAllTimeResult.length > 0 ? incomeAllTimeResult[0].total : 0;
+
+    // Current month's income
+    const currentIncomeResult = await Income.aggregate([
+      {
+        $match: {
+          user: userId,
+          date: { $gte: startOfMonth, $lte: endOfMonth },
+        },
+      },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]);
+    const currentMonthlyIncome = currentIncomeResult.length > 0 ? currentIncomeResult[0].total : 0;
+
+    // Previous month's income
+    const prevIncomeResult = await Income.aggregate([
+      {
+        $match: {
+          user: userId,
+          date: { $gte: startOfPrevMonth, $lte: endOfPrevMonth },
+        },
+      },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]);
+    const prevMonthlyIncome = prevIncomeResult.length > 0 ? prevIncomeResult[0].total : 0;
 
     // 2. Calculate Total Expenses (all-time sum of absolute values of expense transactions)
     const expenseAllTimeResult = await Transaction.aggregate([
@@ -67,35 +102,66 @@ export const getSummary = async (req, res, next) => {
 
     // 5. Budget Remaining = Budget - Expenses (this month)
     const budgetRemaining = Math.max(0, user.monthlyBudget - monthlySpendingVal);
-    const budgetUsedPercent = user.monthlyBudget > 0
-      ? Math.min(100, Math.round((monthlySpendingVal / user.monthlyBudget) * 100))
+    const rawBudgetUsedPercent = user.monthlyBudget > 0
+      ? (monthlySpendingVal / user.monthlyBudget) * 100
       : 0;
+    const budgetUsedPercent = Math.round(rawBudgetUsedPercent * 10) / 10;
+    const budgetUsedStr = formatPercent(rawBudgetUsedPercent);
+
+    // Calculate accurate Total Income MoM change
+    let incomeChangeText = '0%';
+    let incomeUp = true;
+    if (prevMonthlyIncome > 0) {
+      const diff = ((currentMonthlyIncome - prevMonthlyIncome) / prevMonthlyIncome) * 100;
+      incomeChangeText = `${diff >= 0 ? '+' : ''}${formatPercent(diff)} vs last mo.`;
+      incomeUp = diff >= 0;
+    } else if (currentMonthlyIncome > 0) {
+      incomeChangeText = '+100% vs last mo.';
+      incomeUp = true;
+    } else {
+      incomeChangeText = '0% vs last mo.';
+      incomeUp = true;
+    }
+
+    // Calculate accurate Total Balance change / Savings rate
+    let balanceChangeText = totalBalance >= 0 ? '+100%' : '-100%';
+    let balanceUp = totalBalance >= 0;
+    if (currentMonthlyIncome > 0) {
+      const savingsRate = Math.max(0, ((currentMonthlyIncome - monthlySpendingVal) / currentMonthlyIncome) * 100);
+      balanceChangeText = `${formatPercent(savingsRate)} saved`;
+      balanceUp = savingsRate >= 20;
+    } else if (totalIncome > 0) {
+      const savingsRate = Math.max(0, ((totalIncome - totalExpense) / totalIncome) * 100);
+      balanceChangeText = `${formatPercent(savingsRate)} saved`;
+      balanceUp = savingsRate >= 20;
+    }
 
     // Format metrics matching frontend array format
     const metrics = [
       {
         label: 'Total Balance',
         value: totalBalance,
-        change: totalBalance >= 0 ? '+100%' : '-100%',
-        up: totalBalance >= 0,
+        change: '',
+        up: true,
       },
       {
         label: "This Month's Spending",
         value: monthlySpendingVal,
-        change: `${budgetUsedPercent}% of budget`,
-        up: budgetUsedPercent < 80,
+        change: '',
+        up: true,
       },
       {
         label: 'Total Income',
         value: totalIncome,
-        change: totalIncome > 0 ? '+10%' : '0%',
+        change: '',
         up: true,
       },
       {
         label: 'Budget Remaining',
         value: budgetRemaining,
-        change: `${budgetUsedPercent}% used`,
-        up: budgetUsedPercent < 80,
+        change: '',
+        up: true,
+        subtext: `of ₹${user.monthlyBudget.toLocaleString()} limit`,
       },
     ];
 

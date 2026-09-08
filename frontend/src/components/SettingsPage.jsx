@@ -216,6 +216,9 @@ function SettingsPage({ user, setUser, onLogout }) {
                 required
                 min="0"
               />
+              <span className="text-[11px] text-stone/70 mt-1.5 block">
+                Your monthly spending target. "Budget Remaining" on your dashboard is calculated as this limit minus your monthly spending.
+              </span>
             </div>
 
             <button

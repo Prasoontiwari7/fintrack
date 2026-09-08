@@ -98,13 +98,16 @@ function DashboardHome({ user }) {
                 <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center">
                   <Icon size={18} className="text-gold" />
                 </div>
-                <span className={`text-xs font-medium flex items-center gap-1 ${m.up ? 'text-emerald-light' : 'text-rust'}`}>
-                  {m.up ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-                  {m.change}
-                </span>
+                {m.change ? (
+                  <span className={`text-xs font-medium flex items-center gap-1 ${m.up ? 'text-emerald-light' : 'text-rust'}`}>
+                    {m.up ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                    {m.change}
+                  </span>
+                ) : null}
               </div>
               <p className="text-stone text-sm mb-1">{m.label}</p>
               <p className="text-2xl font-bold text-cream">₹{m.value.toLocaleString()}</p>
+              {m.subtext && <p className="text-stone/60 text-xs mt-1">{m.subtext}</p>}
             </div>
           );
         })}
