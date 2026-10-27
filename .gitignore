@@ -28,5 +28,13 @@ lerna-debug.log*
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
+
+# Python & Machine Learning Models (Exceeds GitHub 100MB limit)
+*.pt
+*.bin
+*.onnx
+*.safetensors
+__pycache__/
+*.py[cod]
+*$py.class
