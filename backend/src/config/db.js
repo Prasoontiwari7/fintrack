@@ -13,10 +13,9 @@ const connectDB = async () => {
 
   // Production Mongoose Options
   const options = {
-    serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of 30 seconds
-    socketTimeoutMS: 45000,         // Close inactive sockets after 45 seconds
-    maxPoolSize: 10,                // Maintain up to 10 socket connections
-    family: 4,                      // Force IPv4 DNS resolution (avoids Windows IPv6 lookup timeout crashes)
+    serverSelectionTimeoutMS: 30000, // Timeout after 30 seconds for cloud Atlas cluster
+    socketTimeoutMS: 45000,          // Close inactive sockets after 45 seconds
+    maxPoolSize: 10,                 // Maintain up to 10 socket connections
   };
 
   // Connection Event Listeners

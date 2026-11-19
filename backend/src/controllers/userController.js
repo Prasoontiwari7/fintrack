@@ -36,10 +36,11 @@ export const updateProfile = async (req, res, next) => {
       return next(new Error('User not found'));
     }
 
-    const { name, monthlyBudget } = req.body;
+    const { name, monthlyBudget, phoneNumber } = req.body;
 
     if (name) user.name = name;
     if (monthlyBudget !== undefined) user.monthlyBudget = Number(monthlyBudget);
+    if (phoneNumber !== undefined) user.phoneNumber = phoneNumber.trim();
 
     const updatedUser = await user.save();
 
@@ -53,6 +54,7 @@ export const updateProfile = async (req, res, next) => {
           email: updatedUser.email,
           monthlyBudget: updatedUser.monthlyBudget,
           profileImage: updatedUser.profileImage,
+          phoneNumber: updatedUser.phoneNumber,
         },
       },
     });

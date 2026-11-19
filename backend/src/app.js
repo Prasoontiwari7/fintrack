@@ -12,10 +12,14 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import incomeRoutes from './routes/incomeRoutes.js';
 import exportRoutes from './routes/exportRoutes.js';
+import chatbotRoutes from './chatbot/chatbotRoutes.js';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
+
+// Trust proxy for reverse proxies (localtunnel, ngrok, Render, etc.)
+app.set('trust proxy', 1);
 
 // Security Middlewares
 app.use(helmet());
@@ -43,7 +47,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-// Rate Limiting (100 requests per 15 minutes)
+// Mount chatbot webhook BEFORE rate limiter — Twilio server-to-server calls must never be rate-limited
+app.use('/api/chatbot', chatbotRoutes);
+
+// Rate Limiting (100 requests per 15 minutes) — applied to all other /api routes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -53,6 +60,7 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
 });
 app.use('/api', limiter);
 

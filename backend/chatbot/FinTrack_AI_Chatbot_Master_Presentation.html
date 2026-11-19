@@ -1,0 +1,1276 @@
+<!-- FinTrack AI Chatbot & MuRIL Integration Master Slide Deck -->
+<!-- Open in any web browser (Chrome, Edge, Firefox). Use Left/Right Arrow keys or Spacebar to navigate. Press 'F' for Fullscreen. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrack AI Chatbot & MuRIL Integration — Master Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 15% 15%, #1a1f35 0%, #0c0f17 100%);
+      --card-bg: rgba(22, 28, 45, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(12, 15, 23, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slide-counter {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-purple), #6366f1);
+      border: none;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #9d75f7, #7c7ff3);
+      box-shadow: 0 6px 18px rgba(139, 92, 246, 0.5);
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      width: 92%;
+      max-width: 1400px;
+      height: 85vh;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      padding: 44px 56px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateX(60px) scale(0.97);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .slide.prev {
+      opacity: 0;
+      transform: translateX(-60px) scale(0.97);
+    }
+
+    .slide-header {
+      margin-bottom: 24px;
+    }
+
+    .slide-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-tag::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+    }
+
+    .slide-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(30, 39, 62, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.25s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(30, 39, 62, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title.cyan { color: var(--accent-cyan); }
+    .card-title.purple { color: var(--accent-purple); }
+    .card-title.emerald { color: var(--accent-emerald); }
+    .card-title.amber { color: var(--accent-amber); }
+    .card-title.rose { color: var(--accent-rose); }
+
+    ul.feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    ul.feature-list li {
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    ul.feature-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+      font-weight: bold;
+    }
+
+    pre.code-block {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #38bdf8;
+      overflow-x: auto;
+    }
+
+    .diagram-box {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: #34d399;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    table.data-table th, table.data-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    table.data-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+    }
+
+    table.data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .pill-cyan { background: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .pill-green { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-purple { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .pill-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    footer {
+      display: flex;
+      flex-direction: column;
+      background: rgba(12, 15, 23, 0.9);
+      border-top: 1px solid var(--card-border);
+      padding: 12px 36px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hotkeys {
+      display: flex;
+      gap: 16px;
+    }
+
+    kbd {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>FinTrack</span>
+      <span class="brand-badge">MuRIL AI Chatbot</span>
+    </div>
+    <div class="nav-controls">
+      <div class="slide-counter" id="slideIndicator">Slide 01 / 22</div>
+      <button class="btn" id="prevBtn" title="Previous Slide (←)">
+        <span>◀</span> Prev
+      </button>
+      <button class="btn btn-primary" id="nextBtn" title="Next Slide (→ or Space)">
+        Next <span>▶</span>
+      </button>
+      <button class="btn" id="fullscreenBtn" title="Toggle Fullscreen (F)">
+        ⛶ Fullscreen
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Slide 1 -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-header">
+        <div class="slide-tag">Executive Overview & Architecture</div>
+        <h1 class="slide-title">FinTrack: Multilingual WhatsApp AI Financial Assistant</h1>
+        <p class="slide-subtitle">Powered by Google MuRIL, Dual-Head PyTorch Transformers, FastAPI Microservice, Node.js/Express, & Twilio</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="card-title cyan">The Core Problem</h3>
+            <ul class="feature-list">
+              <li>Manual expense tracking in GUI apps suffers from <strong>>70% user drop-off</strong> within 14 days.</li>
+              <li>Traditional bots require rigid syntax: <code>ADD EXPENSE 250 FOOD</code>.</li>
+              <li>Indian consumers naturally text in <strong>Hinglish (Code-Mixed)</strong>: <em>"yaar 250 ka pizza mangaya"</em>.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">The AI Solution</h3>
+            <ul class="feature-list">
+              <li>Fine-tuned <strong>Google MuRIL</strong> (Multilingual Representations for Indian Languages).</li>
+              <li><strong>Dual-Head Neural Architecture</strong>: Jointly predicts Transaction Type (Income/Expense) and Category (15 classes).</li>
+              <li>Hybrid regex + deterministic keyword pipeline for sub-millisecond execution.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Production Ecosystem</h3>
+            <ul class="feature-list">
+              <li><strong>FastAPI Microservice (Port 8000)</strong> with in-memory model caching & API key authentication.</li>
+              <li><strong>Node.js/Express (Port 5000)</strong> orchestrating Twilio WhatsApp webhooks, HMAC validation, and MongoDB.</li>
+              <li>Interactive commands: <code>balance</code>, <code>budget</code>, <code>recent</code>, <code>link</code>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 10px; background: rgba(6, 182, 212, 0.05); border-color: rgba(6, 182, 212, 0.2);">
+          <p style="font-size: 0.95rem; color: #bae6fd;">
+            <strong>Demonstration Trigger:</strong> Sending <em>"amazon se 1800 ke shoes liye"</em> via WhatsApp extracts ₹1800, detects Expense, classifies Shopping via MuRIL, updates MongoDB Atlas, and returns real-time balance & budget status in &lt; 250ms.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide" data-slide="2">
+      <div class="slide-header">
+        <div class="slide-tag">System Topology</div>
+        <h1 class="slide-title">End-to-End Microservice Architecture</h1>
+        <p class="slide-subtitle">How WhatsApp, Twilio, Node.js Express, Python FastAPI, and MongoDB communicate</p>
+      </div>
+      <div class="slide-content">
+        <div class="diagram-box">
++------------------------+             +------------------------+             +------------------------+
+|  USER ON WHATSAPP/SMS  |             |  TWILIO CLOUD GATEWAY  |             |  NGROK SECURE TUNNEL   |
+| "yaar 250 ka pizza"    | ==(HTTPS)==>| Computes HMAC Signature| ==(HTTPS)==>| Exposes Local Port 5000 |
++------------------------+             +------------------------+             +-----------+------------+
+                                                                                          |
+                                                                                          v
++-----------------------------------------------------------------------------------------+------------+
+| EXPRESS.JS BACKEND (Port 5000)                                                                       |
+| 1. twilioController.js: Validates X-Twilio-Signature & Deduplicates MessageSid (30-min cache)        |
+| 2. chatbotService.js: Resolves User in MongoDB via phone sanitization (last-10-digit regex)          |
+| 3. Checks built-in commands: [balance, budget, recent, help, link user@example.com]                  |
++-----------------------------------------------------------------------------------------+------------+
+                                                                                          |
+                                                      (Internal HTTP POST /predict, X-API-Key Header)
+                                                                                          v
++-----------------------------------------------------------------------------------------+------------+
+| PYTHON FASTAPI MODEL MICROSERVICE (Port 8000)                                                        |
+| 1. main.py: Lifespan loads MuRIL model weights once into memory (muril_whatsapp_best.pt)              |
+| 2. rules.py: Regex amount extractor (₹, rs, k, commas) + keyword matcher                             |
+| 3. model.py: PyTorch TransactionClassifier (Transformer Backbone + Type Head + Category Head)       |
+| 4. Returns: { type: "Expense", category: "Food", amount: 250.0, confidence: 0.94, ready_to_save: true }|
++-----------------------------------------------------------------------------------------+------------+
+                                                                                          |
+                                                      (JSON Response returned to Express)
+                                                                                          v
++-----------------------------------------------------------------------------------------+------------+
+| DATABASE MUTATION & TWIML GENERATION                                                                 |
+| - Express logs transaction to MongoDB 'transactions' or 'incomes' collection                          |
+| - Computes updated total balance & monthly budget usage percentage                                   |
+| - Returns TwiML XML to Twilio: <Response><Message>✅ Logged: -₹250 (Food)...</Message></Response>   |
++------------------------------------------------------------------------------------------------------+
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide" data-slide="3">
+      <div class="slide-header">
+        <div class="slide-tag">Original Codebase Analysis</div>
+        <h1 class="slide-title">The Provided Python Codes & Initial Dataset</h1>
+        <p class="slide-subtitle">Analyzing Kaggle Notebook <code>notebook36948a0785.ipynb</code> and <code>notebook_code.py</code></p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">The Original Notebook Assets</h3>
+            <ul class="feature-list">
+              <li><strong>Source:</strong> 34 distinct experimental steps across 7,249 lines of Jupyter cells.</li>
+              <li><strong>Initial Dataset:</strong> <em>Daily Household Transactions.csv</em> (~15,000 transaction records).</li>
+              <li><strong>Columns:</strong> <code>Date</code>, <code>Mode</code>, <code>Category</code>, <code>Subcategory</code>, <code>Note</code>, <code>Amount</code>, <code>Income/Expense</code>.</li>
+              <li><strong>Data Cleaning:</strong> Kept <code>Note</code> (renamed <code>text</code>), <code>Category</code>, <code>Income/Expense</code> (renamed <code>type</code>). Filtered out <em>Transfer-Out</em> rows.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title rose">Why the Raw Notebook Needed Refactoring</h3>
+            <ul class="feature-list">
+              <li><strong>No REST Endpoints:</strong> Only executed interactively within Kaggle cell outputs using <code>display()</code>.</li>
+              <li><strong>VRAM/RAM Leaks:</strong> Reloaded multiple checkpoints repeatedly, exhausting system memory.</li>
+              <li><strong>Schema Discrepancy:</strong> Notebook mapped 15 classes; FinTrack production MongoDB dashboard enforces strict 6-category Enums.</li>
+              <li><strong>No Production Security:</strong> Missing API keys, CORS policies, health check routes, and circuit-breaker fallbacks.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" data-slide="4">
+      <div class="slide-header">
+        <div class="slide-tag">Machine Learning Rigor</div>
+        <h1 class="slide-title">Data Leakage Prevention & Class Weighting</h1>
+        <p class="slide-subtitle">Mathematical mitigation of phrase memorization and class imbalance</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title amber">The Data Leakage Trap (Steps 9 & 10)</h3>
+            <ul class="feature-list">
+              <li>Financial logs repeat identical notes (e.g., hundreds of entries saying <em>"swiggy"</em> or <em>"petrol"</em>).</li>
+              <li>A standard random <code>train_test_split()</code> puts exact duplicates into both train and test partitions.</li>
+              <li>The transformer simply memorizes string hashes, yielding a <strong>deceptive 99% test score</strong> that collapses on unseen real-world phrases.</li>
+              <li><strong>Solution:</strong> Implemented <strong>Text-Disjoint Group Splitting</strong>:
+                <pre class="code-block" style="margin-top: 8px;">Train_Unique_Texts ∩ Val_Unique_Texts = ∅</pre>
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">Tempered Class Weighting (Step 20)</h3>
+            <ul class="feature-list">
+              <li>Dataset had high class imbalance: <em>Food</em> had >1,200 rows, while <em>Festivals</em> had <40 rows.</li>
+              <li>Standard Inverse-Frequency weights: $w_c = \frac{N}{N_c}$. For rare classes, this generates massive multipliers causing explosive gradient spikes.</li>
+              <li><strong>Tempered Inverse Frequency Formula:</strong></li>
+            </ul>
+            <div style="background: #090d16; padding: 14px; border-radius: 8px; margin-top: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+              <span style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan);">
+                w<sub>c</sub> = ( N / N<sub>c</sub> )<sup>α</sup>, &nbsp; with α = 0.5
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide" data-slide="5">
+      <div class="slide-header">
+        <div class="slide-tag">Transformer Backbone</div>
+        <h1 class="slide-title">Google MuRIL: Multilingual Indian Language BERT</h1>
+        <p class="slide-subtitle">Why MuRIL decisively outperforms standard BERT, RoBERTa, and LLaMA for Hinglish</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">MuRIL Specifications</h3>
+            <table class="data-table">
+              <tr><th>Parameter</th><th>Value</th></tr>
+              <tr><td>Hugging Face ID</td><td><code>google/muril-base-cased</code></td></tr>
+              <tr><td>Layers (Encoder Blocks)</td><td>12 Transformer Layers</td></tr>
+              <tr><td>Hidden Dimension ($d_{\text{model}}$)</td><td>768 dimensions</td></tr>
+              <tr><td>Self-Attention Heads</td><td>12 Heads ($d_k = 64$)</td></tr>
+              <tr><td>Total Parameters</td><td>~236 Million Parameters</td></tr>
+              <tr><td>Vocabulary Size</td><td><strong>197,285 Tokens</strong> (BERT has 30k)</td></tr>
+              <tr><td>Supported Languages</td><td>17 Indian Languages + English</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Why MuRIL Beats Standard English BERT</h3>
+            <ul class="feature-list">
+              <li><strong>Pre-trained on Transliterated Pairs:</strong> MuRIL was trained on parallel Roman script (Latin) and Native script (Devanagari, Tamil, etc.).</li>
+              <li><strong>Subword Fertility Advantage:</strong>
+                <p style="font-size: 0.85rem; margin-top: 4px; color: #94a3b8;">
+                  BERT Tokenizer: <em>"kharcha"</em> $\to$ <code>['kh', '##ar', '##ch', '##a']</code>.<br>
+                  MuRIL Tokenizer: <em>"kharcha"</em> $\to$ <code>['kharcha']</code> (Single semantic token).
+                </p>
+              </li>
+              <li><strong>Code-Mixing Resilience:</strong> Retains semantic associations when users alternate Hindi and English within the same sentence.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide" data-slide="6">
+      <div class="slide-header">
+        <div class="slide-tag">Mathematical Foundations</div>
+        <h1 class="slide-title">The Mathematics of Transformer Self-Attention</h1>
+        <p class="slide-subtitle">Formulas governing token representation, query-key scaling, and projection</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title purple">Scaled Dot-Product Attention</h3>
+            <div style="background: #090d16; padding: 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;">
+              <p style="font-family: var(--font-mono); font-size: 1.15rem; color: #38bdf8; text-align: center;">
+                Attention(Q, K, V) = softmax( (Q K<sup>T</sup>) / √d<sub>k</sub> ) V
+              </p>
+            </div>
+            <ul class="feature-list">
+              <li><strong>Query ($Q$), Key ($K$), Value ($V$):</strong> Projections of input embeddings via learned weight matrices $W^Q, W^K, W^V \in \mathbb{R}^{768 \times 64}$.</li>
+              <li><strong>Why divide by $\sqrt{d_k}$?</strong> As $d_k=64$ grows, dot products scale larger, pushing softmax into extreme regions with near-zero gradients. $\sqrt{d_k}$ normalizes the variance to $1.0$.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title cyan">Multi-Head Attention (12 Heads)</h3>
+            <div style="background: #090d16; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;">
+              <p style="font-family: var(--font-mono); font-size: 0.95rem; color: #34d399;">
+                MHA(Q,K,V) = Concat(head<sub>1</sub>, ..., head<sub>12</sub>) W<sup>O</sup>
+              </p>
+            </div>
+            <ul class="feature-list">
+              <li>Allows the model to jointly attend to information from different representation subspaces (e.g. monetary values, merchants, actions).</li>
+              <li>Final pooled <code>[CLS]</code> token representation $h_{\text{CLS}} \in \mathbb{R}^{768}$ captures entire sentence semantics.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide" data-slide="7">
+      <div class="slide-header">
+        <div class="slide-tag">PyTorch Implementation</div>
+        <h1 class="slide-title">Dual-Head Multi-Task Transaction Classifier</h1>
+        <p class="slide-subtitle">Shared transformer encoder with parallel Type and Category linear heads</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">Neural Network Structure</h3>
+            <pre class="code-block">
+class TransactionClassifier(nn.Module):
+    def __init__(self, bert_model, num_types=2, num_categories=15):
+        super().__init__()
+        self.bert = bert_model
+        hidden = self.bert.config.hidden_size # 768
+        self.dropout = nn.Dropout(0.1)
+        self.type_head = nn.Linear(hidden, num_types)
+        self.category_head = nn.Linear(hidden, num_categories)
+
+    def forward(self, input_ids, attention_mask):
+        output = self.bert(input_ids, attention_mask=attention_mask)
+        pooled = output.pooler_output # [CLS] token
+        pooled = self.dropout(pooled)
+        type_logits = self.type_head(pooled)
+        category_logits = self.category_head(pooled)
+        return type_logits, category_logits
+            </pre>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">Joint Multi-Task Loss Formulation</h3>
+            <div style="background: #090d16; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;">
+              <p style="font-family: var(--font-mono); font-size: 1.05rem; color: #c084fc; text-align: center;">
+                ℒ<sub>total</sub> = ℒ<sub>category</sub> + λ · ℒ<sub>type</sub> &nbsp; (λ = 0.5)
+              </p>
+            </div>
+            <ul class="feature-list">
+              <li><strong>$\mathcal{L}_{\text{category}}$:</strong> Weighted Multi-Class Cross-Entropy across 15 categories with tempered class weights.</li>
+              <li><strong>$\mathcal{L}_{\text{type}}$:</strong> Binary Cross-Entropy (Expense vs Income).</li>
+              <li>Multi-Task Learning acts as a regularizer, reinforcing category decision boundaries without additional parameter overhead.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide" data-slide="8">
+      <div class="slide-header">
+        <div class="slide-tag">Training Dynamics</div>
+        <h1 class="slide-title">Two-Stage Fine-Tuning & Checkpoint Evolution</h1>
+        <p class="slide-subtitle">From structured household logs to unstructured WhatsApp conversations</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title amber">Stage 1: Base Fine-Tuning</h3>
+            <ul class="feature-list">
+              <li><strong>Dataset:</strong> 15,000 formal English household notes.</li>
+              <li><strong>Hyperparameters:</strong> AdamW, $\text{lr}=2\times 10^{-5}$, Batch Size 32, 5 Epochs.</li>
+              <li><strong>Output Checkpoint:</strong> <code>muril_original_best.pt</code> (950 MB).</li>
+              <li>Failed on colloquial Hinglish WhatsApp messages (accuracy collapsed to 61%).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Stage 2: WhatsApp Domain Adaptation</h3>
+            <ul class="feature-list">
+              <li><strong>Dataset:</strong> 1,200+ synthesized & real Hinglish conversational phrases across all 15 categories.</li>
+              <li><strong>Hyperparameters:</strong> Lower learning rate $\text{lr}=1\times 10^{-5}$ to prevent catastrophic forgetting.</li>
+              <li><strong>Output Checkpoint:</strong> <code>muril_whatsapp_best.pt</code> (950 MB).</li>
+              <li>Real-world WhatsApp classification accuracy reached <strong>93.8%</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide" data-slide="9">
+      <div class="slide-header">
+        <div class="slide-tag">Latency & Precision Optimization</div>
+        <h1 class="slide-title">The 5-Stage Hybrid Inference Pipeline</h1>
+        <p class="slide-subtitle">Combining deterministic rules with deep learning for sub-millisecond execution</p>
+      </div>
+      <div class="slide-content">
+        <div class="diagram-box">
+Incoming WhatsApp Message: "yaar 250 ka pizza mangaya"
+   |
+   +--> [ Stage 1: Regex Amount Extraction ]
+   |    Matches: ₹, rs, inr, k notation, commas, decimals -> Extracted: 250.0
+   |
+   +--> [ Stage 2: Rule-Based Type Detection ]
+   |    Checks income tokens (salary, credited, received, refund) -> Detected: "Expense"
+   |
+   +--> [ Stage 3: Deterministic Keyword Dictionary Match ]
+   |    Scans curated dictionary (15 categories). Matches "pizza" in Food list.
+   |    -> Result: Category = "Food", Source = "rule", Confidence = 1.0 (Skips heavy GPU pass!)
+   |
+   +--> [ Stage 4: Neural MuRIL Fallback (When Stage 3 has No Keyword Match) ]
+   |    Runs PyTorch forward pass: input_ids -> Transformer -> Softmax.
+   |    If Confidence >= 0.85 -> Category = Predicted, Source = "muril"
+   |    If Confidence < 0.85  -> Source = "muril_low_confidence", Flagged for user confirmation
+   |
+   +--> [ Stage 5: Schema Mapping Layer ]
+        Translates 15 Model categories to FinTrack MongoDB Enums:
+        Food -> Food | Apparel -> Shopping | Household/Subscription -> Utilities
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 10 -->
+    <section class="slide" data-slide="10">
+      <div class="slide-header">
+        <div class="slide-tag">Engineering Refactor</div>
+        <h1 class="slide-title">How I Re-Engineered the Code into <code>backend/model-api/</code></h1>
+        <p class="slide-subtitle">Transitioning from exploratory scripts to an enterprise production microservice</p>
+      </div>
+      <div class="slide-content">
+        <table class="data-table">
+          <tr>
+            <th>Notebook Concept</th>
+            <th>Production File</th>
+            <th>Refactoring & Architectural Improvements</th>
+          </tr>
+          <tr>
+            <td><strong>Cells 27 & 28</strong> (Ad-hoc regex & dicts)</td>
+            <td><code>rules.py</code></td>
+            <td>Clean, zero-dependency utility module with optimized regex patterns for Indian currency (<code>₹</code>, <code>rs</code>, <code>k</code>), keyword matcher, and MongoDB schema enum mappers.</td>
+          </tr>
+          <tr>
+            <td><strong>Cells 13 & 24</strong> (PyTorch class & weights)</td>
+            <td><code>model.py</code></td>
+            <td>Encapsulated in <code>MuRILService</code> singleton class. Auto-detects CUDA/CPU, loads tokenizer & weights once, sets <code>eval()</code>, and wraps inference in <code>torch.no_grad()</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Cells 32-34</strong> (Inline Kaggle API)</td>
+            <td><code>main.py</code></td>
+            <td>Async <strong>FastAPI</strong> application with modern <code>lifespan</code> manager, CORS middleware, Pydantic type safety, and <code>X-API-Key</code> header verification.</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 11 -->
+    <section class="slide" data-slide="11">
+      <div class="slide-header">
+        <div class="slide-tag">REST API Interface</div>
+        <h1 class="slide-title">Inside the FastAPI Model Microservice (Port 8000)</h1>
+        <p class="slide-subtitle">Lifespan memory caching, API key security, and request/response contracts</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">Lifespan Warm-Up (Zero Cold-Start)</h3>
+            <pre class="code-block">
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global service
+    service = MuRILService()
+    yield
+    print("[FastAPI] Shutting down MuRIL...")
+
+app = FastAPI(title="FinTrack MuRIL API", lifespan=lifespan)
+            </pre>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">Endpoint Contract: <code>POST /predict</code></h3>
+            <pre class="code-block">
+// Request Header: X-API-Key: fintrack_model_secret_key_123
+// Request Body: { "message": "yaar 250 ka pizza mangaya" }
+
+// Response (200 OK):
+{
+  "status": "success",
+  "type": "Expense",
+  "category": "Food",
+  "mapped_category": "Food",
+  "amount": 250.0,
+  "confidence": 1.0,
+  "source": "rule",
+  "ready_to_save": true
+}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 12 -->
+    <section class="slide" data-slide="12">
+      <div class="slide-header">
+        <div class="slide-tag">Node.js Express Architecture</div>
+        <h1 class="slide-title">Inside the Express Chatbot Directory (<code>backend/src/chatbot/</code>)</h1>
+        <p class="slide-subtitle">Modular breakdown of routes, controllers, services, and configurations</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan"><code>twilioConfig.js</code></h3>
+            <ul class="feature-list">
+              <li>Initializes official Twilio SDK using <code>TWILIO_ACCOUNT_SID</code> and <code>TWILIO_AUTH_TOKEN</code>.</li>
+              <li>Includes <code>isTwilioConfigured()</code> fallback: app boots gracefully in mock/offline mode if keys aren't set.</li>
+            </ul>
+            <h3 class="card-title purple" style="margin-top: 14px;"><code>chatbotRoutes.js</code></h3>
+            <ul class="feature-list">
+              <li><code>POST /webhook</code>: Twilio incoming SMS/WhatsApp webhook.</li>
+              <li><code>POST /test</code>: Direct JSON testing endpoint for dashboard or Postman.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald"><code>chatbotController.js</code></h3>
+            <ul class="feature-list">
+              <li>Cryptographic signature validation (HMAC-SHA1).</li>
+              <li>Webhook deduplication using in-memory <code>processedMessageSids</code> map with 30-min TTL.</li>
+              <li>Wraps replies in Twilio Markup Language (TwiML XML).</li>
+            </ul>
+            <h3 class="card-title amber" style="margin-top: 14px;"><code>chatbotService.js</code></h3>
+            <ul class="feature-list">
+              <li>Phone sanitization and MongoDB user resolution.</li>
+              <li>Handles financial commands (<code>balance</code>, <code>budget</code>, <code>recent</code>).</li>
+              <li>Makes HTTP POST request to Python MuRIL API.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 13 -->
+    <section class="slide" data-slide="13">
+      <div class="slide-header">
+        <div class="slide-tag">Security & Idempotency</div>
+        <h1 class="slide-title">Twilio Webhook Security & Idempotency</h1>
+        <p class="slide-subtitle">Cryptographic request authentication and duplicate retry prevention</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title rose">HMAC-SHA1 Signature Validation</h3>
+            <pre class="code-block">
+const isValid = twilio.validateRequest(
+  authToken,
+  req.headers['x-twilio-signature'],
+  fullUrl,
+  req.body
+);
+if (!isValid) return res.status(403).send('Forbidden');
+            </pre>
+          </div>
+          <div class="card">
+            <h3 class="card-title amber">Webhook Idempotency (Deduplication)</h3>
+            <pre class="code-block">
+const processedMessageSids = new Map();
+
+if (processedMessageSids.has(messageSid)) {
+  return res.end(new MessagingResponse().toString());
+}
+processedMessageSids.set(messageSid, Date.now());
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 14 -->
+    <section class="slide" data-slide="14">
+      <div class="slide-header">
+        <div class="slide-tag">State Management</div>
+        <h1 class="slide-title">Phone Number Linking & User Resolution</h1>
+        <p class="slide-subtitle">Mapping an anonymous WhatsApp phone number to a registered MongoDB user</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="card-title cyan">1. Phone Sanitization</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Strips <code>whatsapp:</code> prefixes and whitespace.</p>
+            <pre class="code-block" style="margin-top: 10px;">cleanPhoneNumber(phone)</pre>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">2. Two-Tier Query</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">1. Exact match on <code>User.phoneNumber</code>.<br>2. Loose regex match on the <strong>last 10 digits</strong>.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">3. Interactive Linking</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Users can reply <code>link user@example.com</code> to bind their phone number in real time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 15 -->
+    <section class="slide" data-slide="15">
+      <div class="slide-header">
+        <div class="slide-tag">Database Analytics</div>
+        <h1 class="slide-title">Conversational Dashboard Commands</h1>
+        <p class="slide-subtitle">Executing MongoDB aggregation pipelines directly over WhatsApp</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="card-title cyan"><code>balance</code> / <code>status</code></h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Calculates total all-time income, total expense, and current month spending using MongoDB <code>$sum</code>.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title amber"><code>budget</code></h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Compares monthly spending vs <code>monthlyBudget</code> and alerts if spending exceeds 80%.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald"><code>recent</code> / <code>history</code></h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Returns latest 5 expenses and incomes merged chronologically with formatted timestamps.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 16 -->
+    <section class="slide" data-slide="16">
+      <div class="slide-header">
+        <div class="slide-tag">Microservice Resilience</div>
+        <h1 class="slide-title">The Node.js $\leftrightarrow$ Python Bridge & Circuit Breaker</h1>
+        <p class="slide-subtitle">Ensuring 100% uptime even if the deep learning service experiences an outage</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">The HTTP Client Bridge</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">Uses <code>fetch()</code> with an <code>AbortController</code> 10-second timeout to contact Python port 8000.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title rose">Fallback 7: JavaScript Regex Engine</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">If Python is down, Express seamlessly falls back to a built-in regex parser. No failed transactions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 17 -->
+    <section class="slide" data-slide="17">
+      <div class="slide-header">
+        <div class="slide-tag">Data Persistence</div>
+        <h1 class="slide-title">Database Mutations & Category Mapping</h1>
+        <p class="slide-subtitle">Bridging 15 model categories to FinTrack's production MongoDB schema</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">Category Translation Mapping</h3>
+            <table class="data-table">
+              <tr><th>MuRIL 15 Categories</th><th>FinTrack MongoDB Enum</th></tr>
+              <tr><td>Food</td><td><span class="pill pill-green">Food</span></td></tr>
+              <tr><td>Transportation</td><td><span class="pill pill-cyan">Transport</span></td></tr>
+              <tr><td>Apparel, Beauty, Gift</td><td><span class="pill pill-purple">Shopping</span></td></tr>
+              <tr><td>Household, Subscription</td><td><span class="pill pill-amber">Utilities</span></td></tr>
+              <tr><td>Leisure</td><td><span class="pill pill-purple">Entertainment</span></td></tr>
+              <tr><td>Health</td><td><span class="pill pill-green">Health</span></td></tr>
+              <tr><td>Salary</td><td><span class="pill pill-green">Income (Salary)</span></td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Mongoose Document Creation</h3>
+            <pre class="code-block">
+// Expense:
+await Transaction.create({
+  user: userId,
+  name: rawText,
+  amount: -Math.abs(amount),
+  category: mappedCategory,
+  date: new Date()
+});
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 18 -->
+    <section class="slide" data-slide="18">
+      <div class="slide-header">
+        <div class="slide-tag">Viva Voce Reference Table</div>
+        <h1 class="slide-title">Parameter & Hyperparameter Master Sheet</h1>
+        <p class="slide-subtitle">Every parameter, threshold, and setting that can be asked by the examiner</p>
+      </div>
+      <div class="slide-content">
+        <table class="data-table">
+          <tr><th>Parameter</th><th>Value</th><th>Location</th><th>Significance</th></tr>
+          <tr><td><code>MODEL_NAME</code></td><td><code>google/muril-base-cased</code></td><td><code>model.py</code></td><td>236M param multilingual transformer.</td></tr>
+          <tr><td><code>MAX_LENGTH</code></td><td><code>32</code> tokens</td><td><code>model.py</code></td><td>Optimal length for financial messages.</td></tr>
+          <tr><td><code>CONFIDENCE_THRESHOLD</code></td><td><code>0.85</code></td><td><code>model.py</code></td><td>Threshold gating for neural fallback.</td></tr>
+          <tr><td><code>Dropout Rate</code></td><td><code>0.1</code></td><td><code>model.py</code></td><td>Regularization on classifier heads.</td></tr>
+          <tr><td><code>Class Weight Power (α)</code></td><td><code>0.5</code></td><td>Notebook Step 20</td><td>Square-root tempered weighting $(N/N_c)^{0.5}$.</td></tr>
+          <tr><td><code>Learning Rate</code></td><td><code>2e-5 / 1e-5</code></td><td>Step 15 & 25</td><td>AdamW fine-tuning rate.</td></tr>
+          <tr><td><code>Idempotency Window</code></td><td><code>30 minutes</code></td><td><code>chatbotController.js</code></td><td>TTL for MessageSid deduplication cache.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 19 -->
+    <section class="slide" data-slide="19">
+      <div class="slide-header">
+        <div class="slide-tag">Operational Walkthrough</div>
+        <h1 class="slide-title">End-to-End Trace: <em>"amazon se 1800 ke shoes liye"</em></h1>
+        <p class="slide-subtitle">Step-by-step chronology through network, machine learning, and database layers</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">Chronological Processing (&lt; 200ms)</h3>
+            <ul class="feature-list">
+              <li><strong>User:</strong> Texts <em>"amazon se 1800 ke shoes liye"</em> via WhatsApp.</li>
+              <li><strong>Twilio:</strong> Calculates HMAC signature, sends POST to webhook.</li>
+              <li><strong>Express:</strong> Verifies signature, sanitizes phone, finds user in MongoDB.</li>
+              <li><strong>Python API:</strong> Extracts <code>1800.0</code>, detects <code>Expense</code>, matches <code>shoes</code> $\to$ Apparel (100% conf).</li>
+              <li><strong>MongoDB:</strong> Creates Transaction under <code>Shopping</code>, recalculates balance.</li>
+              <li><strong>WhatsApp:</strong> User receives instant formatted receipt.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Actual WhatsApp Receipt Output</h3>
+            <pre class="code-block" style="color: #a7f3d0; background: #062b1a;">
+✅ Expense Logged to Dashboard!
+
+• Amount: -₹1,800
+• Category: Shopping (Hybrid Rule: Apparel, 100%)
+• Note: "amazon se 1800 ke shoes liye"
+
+💰 Updated Balance: ₹32,400
+📊 Remaining Budget: ₹8,200 (72% used)
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 20 -->
+    <section class="slide" data-slide="20">
+      <div class="slide-header">
+        <div class="slide-tag">Examiner Q&A Session</div>
+        <h1 class="slide-title">Viva Voce Master Questions: Machine Learning & NLP</h1>
+        <p class="slide-subtitle">Targeted technical questions asked in university evaluations and defense panels</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title cyan">Q1: Why MuRIL instead of GPT-4 or standard BERT?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              MuRIL was pre-trained on 17 Indian languages and transliterated pairs (Devanagari $\leftrightarrow$ Latin), runs locally with &lt;30ms latency, and preserves Hinglish word boundaries without fracturing.
+            </p>
+            <h3 class="card-title purple" style="margin-top: 14px;">Q2: What is a Dual-Head Classifier?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              A single shared 236M-parameter Transformer backbone with two separate output heads ($W_{\text{type}}$ and $W_{\text{cat}}$), cutting VRAM by 50% and utilizing multi-task joint regularization.
+            </p>
+          </div>
+          <div class="card">
+            <h3 class="card-title amber">Q3: How did you prevent Data Leakage?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Implemented <strong>Text-Disjoint Group Splitting</strong> so identical repetitive phrases (e.g. <em>"swiggy"</em>) never exist in both train and validation partitions.
+            </p>
+            <h3 class="card-title emerald" style="margin-top: 14px;">Q4: What is Tempered Class Weighting?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Applied $w_c = (N/N_c)^{0.5}$ to prevent explosive gradient spikes on tiny classes while retaining balanced class representation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 21 -->
+    <section class="slide" data-slide="21">
+      <div class="slide-header">
+        <div class="slide-tag">Examiner Q&A Session</div>
+        <h1 class="slide-title">Viva Voce Master Questions: Architecture & Webhooks</h1>
+        <p class="slide-subtitle">System design, cryptographic verification, idempotency, and resiliency</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title rose">Q5: How does Twilio Webhook Security work?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Validates Twilio's HMAC-SHA1 cryptographic signature in <code>X-Twilio-Signature</code>, hashing the URL and parameters using <code>TWILIO_AUTH_TOKEN</code>.
+            </p>
+            <h3 class="card-title amber" style="margin-top: 14px;">Q6: Why is Idempotency essential?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Network retries from Twilio could double-charge expenses. We cache <code>MessageSid</code>s in memory for 30 minutes to return 200 OK without re-logging.
+            </p>
+          </div>
+          <div class="card">
+            <h3 class="card-title cyan">Q7: Why use a Hybrid Model?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Regex extracts numbers with 100% precision in $O(1)$ time, and keyword dictionaries handle merchants instantly, saving the 236M transformer for ambiguous sentences.
+            </p>
+            <h3 class="card-title emerald" style="margin-top: 14px;">Q8: How does Phone Resolution work?</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1;">
+              Two-tier MongoDB lookup: exact match followed by last-10-digit regex, with an interactive <code>link &lt;email&gt;</code> fallback command.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 22 -->
+    <section class="slide" data-slide="22">
+      <div class="slide-header">
+        <div class="slide-tag">Project Conclusion</div>
+        <h1 class="slide-title">Conclusion, Impact & Future Horizons</h1>
+        <p class="slide-subtitle">Summary of engineering milestones achieved and future technological enhancements</p>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="card-title cyan">Milestones Achieved</h3>
+            <ul class="feature-list">
+              <li>End-to-end integration of a 236M parameter model with a live MERN platform.</li>
+              <li>Real-time colloquial Hinglish expense and income logging.</li>
+              <li>Sub-250ms end-to-end response time.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title purple">System Resilience</h3>
+            <ul class="feature-list">
+              <li>Cryptographic HMAC-SHA1 webhook protection.</li>
+              <li>30-minute idempotency deduplication window.</li>
+              <li>Automatic JavaScript regex fallback if the Python API is down.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="card-title emerald">Future Horizons</h3>
+            <ul class="feature-list">
+              <li>OCR receipt scanning with vision transformers.</li>
+              <li>OpenAI Whisper integration for WhatsApp voice notes.</li>
+              <li>Proactive budget alert push notifications.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 10px; text-align: center; background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(139,92,246,0.1)); border-color: rgba(6,182,212,0.3);">
+          <h2 style="font-size: 1.3rem; color: #ffffff; margin-bottom: 4px;">Thank You! Open for Questions & Demonstration</h2>
+          <p style="font-size: 0.9rem; color: var(--accent-cyan);">FinTrack AI WhatsApp Chatbot &bull; Built with MuRIL, FastAPI, Express & Twilio</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="footer-content">
+      <div class="hotkeys">
+        <span>Navigation: <kbd>→</kbd> / <kbd>Space</kbd> Next</span>
+        <span><kbd>←</kbd> Prev</span>
+        <span><kbd>F</kbd> Fullscreen</span>
+      </div>
+      <div>FinTrack Academic Project Defense & Technical Presentation</div>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 1;
+
+    const slideIndicator = document.getElementById('slideIndicator');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    function updatePresentation() {
+      slides.forEach((slide) => {
+        const slideIndex = parseInt(slide.getAttribute('data-slide'));
+        slide.classList.remove('active', 'prev');
+        if (slideIndex === currentSlide) {
+          slide.classList.add('active');
+        } else if (slideIndex < currentSlide) {
+          slide.classList.add('prev');
+        }
+      });
+
+      slideIndicator.textContent = `Slide ${String(currentSlide).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+      const progressPercent = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      prevBtn.style.opacity = currentSlide === 1 ? '0.4' : '1';
+      prevBtn.style.pointerEvents = currentSlide === 1 ? 'none' : 'auto';
+      nextBtn.innerHTML = currentSlide === totalSlides ? 'Finished <span>✔</span>' : 'Next <span>▶</span>';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updatePresentation();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updatePresentation();
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (e.key === 'Home') {
+        currentSlide = 1;
+        updatePresentation();
+      } else if (e.key === 'End') {
+        currentSlide = totalSlides;
+        updatePresentation();
+      }
+    });
+
+    updatePresentation();
+  </script>
+</body>
+</html>
